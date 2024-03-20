@@ -3,7 +3,7 @@ import { FaPlus } from "react-icons/fa";
 import { IoIosMenu } from "react-icons/io";
 import { IoCompassOutline, IoTrophyOutline } from "react-icons/io5";
 import { PiSignOut } from "react-icons/pi";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 function Sidebar() {
 	return (
@@ -19,28 +19,44 @@ function Sidebar() {
 					/>
 				</div>
 				<div className="w-64 h-20 flex items-center">
-					<button className="ml-3 px-6 py-2 flex items-center justify-center rounded-full shadow-sm shadow-gray-400 hover:shadow-md">
-						<FaPlus className="w-9 h-9 text-[#20BEFF]" />
-						<span className="ml-3 text-base text-[#3c4043]">Create</span>
-					</button>
+					<Link to="createCompetition">
+						<button className="ml-3 px-6 py-2 flex items-center justify-center rounded-full shadow-sm shadow-gray-400 hover:shadow-md">
+							<FaPlus className="w-9 h-9 text-[#20BEFF]" />
+							<span className="ml-3 text-base text-[#3c4043]">Create</span>
+						</button>
+					</Link>
 				</div>
-				<div className="mt-4 text-slate-600">
-					<div className="h-12 pl-6 flex">
-						<IoCompassOutline className="w-6 h-6" />
-						<span className="pl-5">Home</span>
-					</div>
-					<div className="h-12 pl-6 flex">
-						<IoTrophyOutline className="w-6 h-6" />
-						<span className="pl-5">Competitions</span>
-					</div>
-					<div className="h-12 pl-6 flex">
-						<CgProfile className="w-6 h-6" />
-						<span className="pl-5">Profile</span>
-					</div>
-					<div className="h-12 pl-6 flex">
-						<PiSignOut className="w-6 h-6" />
-						<span className="pl-5">Sign Out</span>
-					</div>
+				<div className="mt-4 text-gray-600">
+					<NavLink
+						to="home"
+						className={({ isActive }) => (isActive ? "bg-gray-100" : "")}>
+						<div className="h-12 pl-6 flex items-center hover:bg-gray-100">
+							<IoCompassOutline className="w-6 h-6" />
+							<span className="pl-5">Home</span>
+						</div>
+					</NavLink>
+					<NavLink
+						to="competitions"
+						className={({ isActive }) => (isActive ? "bg-gray-100" : "")}>
+						<div className="h-12 pl-6 flex items-center bg-inherit hover:bg-gray-100">
+							<IoTrophyOutline className="w-6 h-6" />
+							<span className="pl-5">Competitions</span>
+						</div>
+					</NavLink>
+					<NavLink
+						to="profile"
+						className={({ isActive }) => (isActive ? "bg-gray-100" : "")}>
+						<div className="h-12 pl-6 flex items-center hover:bg-gray-100">
+							<CgProfile className="w-6 h-6" />
+							<span className="pl-5">Profile</span>
+						</div>
+					</NavLink>
+					<NavLink to="login">
+						<div className="h-12 pl-6 flex items-center hover:bg-gray-100">
+							<PiSignOut className="w-6 h-6 " />
+							<span className="pl-5">Sign Out</span>
+						</div>
+					</NavLink>
 				</div>
 			</div>
 		</div>
