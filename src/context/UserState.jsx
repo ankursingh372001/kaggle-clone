@@ -4,6 +4,7 @@ import { UserContext } from "./UserContext";
 export const UserState = (props) => {
   const [userData, setUserData] = useState(null);
   const [authData, setAuthData] = useState(null);
+
   const fetchUser = async (userId) => {
     try {
       const response = await fetch(`http://localhost:9090/api/user/${userId}`);
@@ -19,8 +20,8 @@ export const UserState = (props) => {
     try {
       const response = await fetch(`http://localhost:9090/api/user/login`, {
         method: "POST",
-        headers:{
-          'Content-Type': 'application/json'
+        headers: {
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(credentials),
       });
@@ -28,8 +29,8 @@ export const UserState = (props) => {
       localStorage.setItem("auth-data", JSON.stringify(userData));
       console.log("auth-data", userData);
       setAuthData(userData);
-      if(userData.userId) return true;
-      else throw new Error('Error occured while login, check server logs');
+      if (userData.userId) return true;
+      else throw new Error("Error occured while login, check server logs");
     } catch (error) {
       console.log("loginUserError: ", error.message);
       return false;
@@ -40,13 +41,16 @@ export const UserState = (props) => {
     try {
       const response = await fetch(`http://localhost:9090/api/user/register`, {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(userdetails),
       });
       const json = await response.json();
-      alert("registered successfully");
+      return true;
     } catch (error) {
       console.log("fetchUserError: ", error.message);
-      alert("error while signing up");
+      return false;
     }
   };
 
