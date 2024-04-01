@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Outlet, Route, Routes, redirect } from "react-router-dom";
 import Competitions from "./components/Competitions";
 import CreateCompetition from "./components/CreateCompetition";
 import Home from "./components/Home";
@@ -51,10 +51,10 @@ export default function App() {
 						element={<Competitions />}
 					/>
 					<Route
-						path="competitions/:competitionId"
+						path="competitions/:contestId"
 						element={<Question />}>
 						<Route
-							path="description"
+							path="*"
 							element={<QuestionDescription />}
 						/>
 						<Route

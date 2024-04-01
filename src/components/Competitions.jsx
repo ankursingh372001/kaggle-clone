@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { FaRegClock } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 import { Dropdown } from "rsuite";
 
 function Competitions() {
@@ -112,7 +113,11 @@ function Competitions() {
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell align="right">{row.contestId}</TableCell>
-                  <TableCell align="center">{row.title}</TableCell>
+                  <TableCell align="center">
+                  <Link to={`/competitions/${row.contestId}`}>
+                  {row.title}
+                  </Link>
+                  </TableCell>
                   <TableCell align="right">{row.startDate}</TableCell>
                   <TableCell align="right">{row.endDate}</TableCell>
                 </TableRow>

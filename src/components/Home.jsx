@@ -1,5 +1,13 @@
+import { useContext, useEffect } from "react";
+import { UserContext } from "../context/UserContext";
+
 function Home() {
-	return <div>Welcome to Home Page</div>;
+  const { userData, fetchUser } = useContext(UserContext);
+  const authData = JSON.parse(localStorage.getItem('auth-data'));
+  useEffect(() => {
+    fetchUser(authData.userId);
+  }, []);
+  return userData ? <div>Welcome {userData.name}</div> : <div>Loading...</div>;
 }
 
 export default Home;
