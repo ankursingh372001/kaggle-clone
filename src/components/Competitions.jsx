@@ -7,23 +7,43 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaRegClock } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import { Dropdown } from "rsuite";
+import { UserContext } from "../context/UserContext";
 
 function Competitions() {
-  const dropdownItems = [
-    "Hotness",
-    "Recently Launched",
-    "Closing Soon",
-    "Reward",
-    "Total Teams",
-  ];
-  const [selectedDropdownItem, setSelectedDropdownItem] = useState(
-    dropdownItems[0]
-  );
+  const { userData } = useContext(UserContext);
+
+  const filterMenuItems = ["Active Competitions", "My Competitions"];
+
+  const [filter, setFilter] = useState(filterMenuItems[0]);
+
   const [competitions, setCompetitions] = useState([]);
+
+  function handleFilterChange(e) {
+    const val = e.target.value;
+    setFilter(val);
+
+    async function fetchCompetitions() {
+      console.log(filter);
+      if (val === "Active Competitions") {
+        const response = await fetch(
+          `http://localhost:9090/api/contests/active`
+        );
+        const json = await response.json();
+        setCompetitions(json);
+      } else if (val === "My Competitions") {
+        setCompetitions(
+          userData?.role === "ADMIN"
+            ? userData?.createdContests
+            : userData?.enrolledContests
+        );
+      }
+    }
+
+    fetchCompetitions();
+  }
 
   useEffect(() => {
     async function getAllCompetitions() {
@@ -35,10 +55,6 @@ function Competitions() {
     }
     getAllCompetitions();
   }, []);
-
-  function handleDropdownClick(item) {
-    setSelectedDropdownItem(item);
-  }
 
   const CompetitionsPageHeader = () => {
     return (
@@ -66,24 +82,19 @@ function Competitions() {
       <div className="mx-2 my-10 flex items-center justify-between">
         <div className="text-xl font-bold flex items-center gap-2">
           <FaRegClock />
-          <span>Active Competitions</span>
+          <span>{filter}</span>
         </div>
         <div>
-          <Dropdown
-            title={selectedDropdownItem}
-            activeKey={selectedDropdownItem}
-          >
-            {dropdownItems.map((dropdownItem) => {
+          <select value={filter} onChange={(e) => handleFilterChange(e)}>
+            {filterMenuItems.map((filterValue, id) => {
               return (
-                <Dropdown.Item
-                  eventKey={dropdownItem}
-                  onClick={() => handleDropdownClick(dropdownItem)}
-                >
-                  {dropdownItem}
-                </Dropdown.Item>
+                <option value={filterValue} key={id}>
+                  {" "}
+                  {filterValue}
+                </option>
               );
             })}
-          </Dropdown>
+          </select>
         </div>
       </div>
     );
@@ -107,16 +118,16 @@ function Competitions() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {competitions.map((row) => (
+              {competitions?.map((row) => (
                 <TableRow
                   key={row.name}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell align="right">{row.contestId}</TableCell>
                   <TableCell align="center">
-                  <Link to={`/competitions/${row.contestId}`}>
-                  {row.title}
-                  </Link>
+                    <Link to={`/competitions/${row.contestId}/description`}>
+                      {row.title}
+                    </Link>
                   </TableCell>
                   <TableCell align="right">{row.startDate}</TableCell>
                   <TableCell align="right">{row.endDate}</TableCell>

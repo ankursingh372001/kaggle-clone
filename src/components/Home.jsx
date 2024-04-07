@@ -7,7 +7,7 @@ function Home() {
   useEffect(() => {
     fetchUser(authData.userId);
   }, []);
-  return userData ? <div>Welcome {userData.name}</div> : <div>Loading...</div>;
+  return userData ? <div className="flex h-screen w-screen items-center justify-center border-1 text-[#23bcfb] text-[100px] mb-20">Welcome {userData.name}</div> : <div>Loading...</div>;
 }
 
 export default Home;

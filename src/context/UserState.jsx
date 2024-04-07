@@ -4,7 +4,7 @@ import { UserContext } from "./UserContext";
 export const UserState = (props) => {
   const [userData, setUserData] = useState(null);
   const [authData, setAuthData] = useState(null);
-
+  
   const fetchUser = async (userId) => {
     try {
       const response = await fetch(`http://localhost:9090/api/user/${userId}`);

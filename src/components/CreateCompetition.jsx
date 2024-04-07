@@ -1,5 +1,6 @@
 import axios from "axios";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../context/UserContext";
 
 function CreateCompetition() {
   const css = {
@@ -8,7 +9,7 @@ function CreateCompetition() {
     label: "absolute top-[-8px] bg-white text-xs text-gray-600 uppercase",
     input: "w-full my-5 outline-none text-gray-800",
   };
-
+  const { userData } = useContext(UserContext);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -21,14 +22,15 @@ function CreateCompetition() {
   const onSubmitHandler = async () => {
     try {
       //   e.preventDefault();
-      formData["admin"] = sessionStorage.getItem("email");
+      formData["adminId"] = userData.id;
       formData["startDate"] = moment(formData["startDate"]).format(
         "YYYY-MM-DDTHH:mm:ss"
       );
       formData["endDate"] = moment(formData["endDate"]).format(
         "YYYY-MM-DDTHH:mm:ss"
       );
-      console.log("submit", formData);
+      // console.log("submit", formData);
+      // return;
       const response = await axios.post(
         "http://localhost:9090/api/contests/create",
         formData,
@@ -38,7 +40,7 @@ function CreateCompetition() {
           },
         }
       );
-      const json = await response.json();
+      const json = response.data;
       console.log({ json });
       alert("Contest Created Successfully");
     } catch (error) {
